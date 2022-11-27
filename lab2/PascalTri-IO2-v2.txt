@@ -1,0 +1,167 @@
+[io2]
+
+[При вызове подпрограммы показатель в 4 ячейку памяти]
+[Адрес массива в 5 ячейку]
+
+[РАБОТАЕТ!!!]
+
+[Инициализация]
+T 56 K
+G K
+[56 0] A 3 F [plant link]
+[57 1] T 82 [subroutineEnd] @ [return]
+
+[подготовка переменных]
+
+[58 2] A 4 [i] F [абсолютно, загружаем input в локальную переменную]
+[59 3] T 83 [localI] @
+[60 4] A 5 [adress] F
+[61 5] T 84 [localAdress] @
+[62 6] T 90 [counter] @
+[63 7] A 94 [start_array_core] @
+[64 8] T 28 [start_array] @
+[65 9] A 93 [const2] @
+[66 10] T 88 [len] @
+
+[подготовка инструкций]
+
+[67 11] A 84 [localAdress] @ [изначально команды в виде T/A/S 0 F и к ним прибавляем адресс массива]
+[68 12] L 0 D
+[69 13] A 85 [core0] @
+[70 14] T 40 [alg0] @
+
+[71 15] A 84 [localAdress] @
+[72 16] L 0 D
+[73 17] A 86 [core1] @
+[74 18] T 41 [alg1] @
+ 
+[75 19] A 84 [localAdress] @
+[76 20] L 0 D
+[77 21] A 87 [core2] @
+[78 22] T 42 [alg2] @
+
+[79 23] A 84 [localAdress] @
+[80 24] L 0 D
+[81 25] A 28 [start_array] @
+[82 26] T 28 [start_array] @
+
+[83 27] A 92 [const1] @
+[84 28] T 0 F [xd]
+
+[Начало алгоритма]
+[a(len - 1) = a(len - 1) + a(len - 2)]
+
+[while counter < localI:]
+	[85 29] A 90 [counter] @
+	[86 30] S 83 [localI] @
+	[87 31] E 82 [end] @
+	[88 32] T 91 [trash] @
+
+	[89 33] A 88 [len] @
+	[90 34] S 92 [const1] @
+	[91 35] S 92 [const1] @
+	[92 36] T 89 [tempLen] @
+
+	[while (len - 2) = tempLen >= 0]
+	
+		[93 37] A 89 [tempLen] @
+		[94 38] G 56 [endofloop] @
+                [95 39] T 91 [trash] @
+
+		[96 40] A 1 F [acc += a(len - 1) -- alg0]
+		[97 41] A 0 F [acc += a(len - 2) = a(len - 1) + len(len - 2) -- alg1]
+		[98 42] T 1 F [save to a(len - 1) -- alg2]
+
+		[99 43] A 40 [alg0] @ [передвижки]
+		[100 44] S 93 [const2] @
+		[101 45] T 40 [alg0] @
+
+		[102 46] A 41 [alg1] @ [передвижки]
+		[103 47] S 93 [const2] @
+		[104 48] T 41 [alg1] @
+	
+		[105 49] A 42 [alg2] @ [передвижки]
+		[106 50] S 93 [const2] @
+		[107 51] T 42 [alg2] @
+
+		[108 52] A 89 [tempLen] @
+		[109 53] S 92 [const1] @
+		[110 54] T 89 [tempLen] @
+		[111 55] E 37 [start of loop] @
+		
+	[112 56] T 91 [trash] @
+	
+	[восстанавливаем + переделываем команды, которые изменяли в прошлом цикле]
+	
+	[113 57] A 92 [const1] @
+	[114 58] A 84 [localAdress] @
+	[115 59] L 0 D
+	[116 60] A 85 [alg0Core] @
+	[117 61] T 40 [alg0] @
+
+	[118 62] A 92 [const1] @
+	[119 63] A 84 [localAdress] @
+	[120 64] L 0 D
+	[121 65] A 86 [alg1Core] @
+	[122 66] T 41 [alg1] @
+
+	[123 67] A 92 [const1] @
+	[124 68] A 84 [localAdress] @
+	[125 69] L 0 D
+	[126 70] A 87 [alg2Core] @
+	[127 71] T 42 [alg2] @
+
+	[128 72] A 88 [len] @
+	[129 73] A 92 [const1] @
+	[130 74] T 88 [len] @
+
+	[131 75] A 90 [counter] @
+	[132 76] A 92 [const1] @
+	[133 77] T 90 [counter] @
+
+	[134 78] A 84 [localAdress] @
+	[135 79] A 92 [const1] @
+	[136 80] T 84 [localAdress] @
+	
+	[137 81] E 29 [start] @
+
+	[138 82] E 0 F [return statment]
+
+	[переменные]
+	
+[139 83] P 0 F [localI]
+[140 84] P 0 F [localAdress]
+[141 85] A 1 F [core0]
+[142 86] A 0 F [core1]
+[143 87] T 1 F [core2]
+[144 88] P 1 F [len]
+[145 89] P 0 F [tempLen]
+[146 90] P 0 F [counter]
+[147 91] P 0 F [trash]
+[148 92] P 0 D [const1]
+[149 93] P 1 F [const2]
+[150 94] T 0 F [start_array_core]
+
+GK
+[151 0] A 16 [in_adress] @
+[152 1] T 5 [adress] F
+[153 2] A 15 [in_pokaz] @
+[154 3] T 4 [i] F
+[155 4] Z 0 F
+
+[156 5] A 5 @  [\ вызов]
+[157 6] G 56 F [/ подпрограммы]
+[158 7] T 0 F
+[159 8] A 15 @
+[160 9] T 4 F
+[161 10] A 17 @
+[162 11] T 5 F
+[163 12] Z 0 F
+
+[164 13] A 13 @ [\ вызов подпрограммы]
+[165 14] G 56 F [/ № 2]
+
+[166 15] P 4 F [in_pokaz = 8]
+[167 16] P 90 F [in_adress = 180]
+[168 17] P 100 F [in_adress = 200]
+[169 18] EZPF

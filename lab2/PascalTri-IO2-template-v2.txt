@@ -1,0 +1,125 @@
+[io2]
+
+[Инициализация]
+T 56 K
+GK
+[56 0] A 3 @ [plant link]
+[57 1] T [subroutineEnd] @ [return]
+
+[подготовка переменных]
+
+[58 2] A [i] F [абсолютно, загружаем input в локальную переменную]
+[59 3] T [localI] @
+[60 4] A [adress] F
+[61 5] T [localAdress] @
+[62 6] T [counter] @
+
+[подготовка инструкций]
+
+[63 7] A [localAdress] @ [изначально команды в виде T/A/S 0 F и к ним прибавляем адресс массива]
+[64 8] L 0 D
+[65 9] A [core0] @
+[66 10] T [alg0] @
+
+[67 11] A [localAdress] @
+[68 12] L 0 D
+[69 13] A [core1] @
+[70 14] T [alg1] @
+
+[71 15] A [localAdress] @
+[72 16] L 0 D
+[73 17] A [core2] @
+[74 18] T [alg2] @
+
+[75 19] A [localAdress] @
+[76 20] L 0 D
+[77 21] A [xd] @
+[78 22] T [xd] @
+
+[75 19] A [const1] @
+[76 20] T 0 F [xd]
+
+[Начало алгоритма]
+[a(len - 1) = a(len - 1) + a(len - 2)]
+
+[while counter < localI:]
+	[] A [counter] @
+	[] S [localI] @
+	[] E [end] @
+	[] T [trash] @
+	
+	[] A [len] @
+	[] S [const1] @
+	[] S [const1] @
+	[] T [tempLen] @
+	
+	[while (len - 2) = tempLen >= 0]
+	
+		[] A [tempLen] @
+		[] G [endofloop] @
+		
+		[] A 1 F [acc += a(len - 1) -- alg0] 
+		[] A 0 F [acc += a(len - 2) = a(len - 1) + len(len - 2) -- alg1]
+		[] T 1 F [save to a(len - 1) -- alg2]
+		
+		[] A [const1] @ [передвижки]
+		[] L 0 D
+		[] S [alg0] @
+		[] T [alg0] @
+		
+		[] A [const1] @
+		[] L 0 D
+		[] S [alg1] @
+		[] T [alg1] @
+		
+		[] A [const1] @
+		[] L 0 D
+		[] S [alg2] @
+		[] T [alg2] @
+		
+		[] A [tempLen] @
+		[] S [const1] @
+		[] T [tempLen] @
+		[] E [start of loop] @
+		
+	[] T [trash] @
+	
+	[восстанавливаем + переделываем команды, которые изменяли в прошлом цикле]
+	
+	[] A [const1] @
+	[] L 0 D
+	[] A [alg0Core] @
+	[] A [localAdress] @
+	[] T [alg0] @
+	
+	[] A [const1] @
+	[] L 0 D
+	[] A [alg1Core] @
+	[] A [localAdress] @
+	[] T [alg1] @
+	
+	[] A [const1] @
+	[] L 0 D
+	[] A [alg2Core] @
+	[] A [localAdress] @
+	[] T [alg2] @
+	
+	[] A [len] @
+	[] A [const1] @
+	[] T [len] @
+	
+	[] A [counter] @
+	[] A [const1] @
+	[] T [counter] @
+	[] E [start] @
+	
+	[переменные]
+	
+	[] P 0 F [localI]
+	[] P 0 F [localAdress]
+	[] A 1 F [core0]
+	[] A 0 F [core1]
+	[] T 1 F [core2]
+	[] P 1 F [len]
+	[] P 0 F [tempLen]
+	[] P 0 F [counter]
