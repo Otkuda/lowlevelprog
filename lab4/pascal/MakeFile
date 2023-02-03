@@ -1,0 +1,17 @@
+COMPILER=riscv64-unknown-elf-gcc
+LIB=riscv64-unknown-elf-ar
+ARCH=-march=rv32i -mabi=ilp32
+
+all: pascal-risc
+
+pascal-risc: main.o lib.a
+	$(COMPILER) $(ARCH) main.o lib.a -o pascal-risc
+
+main.o: main.c
+	$(COMPILER)	$(ARCH) -c main.c -o main.o
+
+lib.a: pascal.o
+	$(LIB) -rsc lib.a pascal.o
+
+pascal.o: pascal.c
+	$(COMPILER) $(ARCH) -c pascal.c -o pascal.o
